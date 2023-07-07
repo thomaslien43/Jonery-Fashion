@@ -13,7 +13,7 @@ const PaymentView = ({ history }) => {
     history.push("/shipping");
   }
 
-  const [paymentMethod, setPaymentMethod] = useState("MidTrans");
+  const [paymentMethod, setPaymentMethod] = useState("Gopay or Credit Card");
 
   const dispatch = useDispatch();
 

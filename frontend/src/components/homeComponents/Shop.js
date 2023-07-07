@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
 import Pagination from "./Pagination";
@@ -7,8 +7,12 @@ import { listProduct } from "../../Redux/Actions/ProductActions";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const Shop = (props) => {
-  const { keyword, pagenumber } = props;
+  const { keyword, pagenumber, category = '' } = props;
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.productList);
@@ -17,6 +21,7 @@ const Shop = (props) => {
   useEffect(() => {
     dispatch(listProduct(keyword, pagenumber));
   }, [dispatch, keyword, pagenumber]);
+
   return (
     <>
       <div className="container">
@@ -32,7 +37,7 @@ const Shop = (props) => {
                   <Message variant="alert-danger">{error}</Message>
                 ) : (
                   <>
-                    {products.map((product) => (
+                    {products.filter((product)=> product.name.toLowerCase().includes(category.toLowerCase() === 'all' ? '' : category.toLowerCase() )).map((product) => (
                       <div
                         className="shop col-lg-4 col-md-6 col-sm-6"
                         key={product._id}
@@ -55,7 +60,7 @@ const Shop = (props) => {
                               value={product.rating}
                               text={`${product.numReviews} reviews`}
                             />
-                            <h3>Rp{product.price}</h3>
+                            <h3>Rp {numberWithCommas(product.price)}</h3>
                           </div>
                         </div>
                       </div>

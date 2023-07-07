@@ -1,13 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const OrderDetailProducts = (props) => {
   const { order, loading } = props;
 
   if (!loading) {
     // Calculate Price
     const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100).toFixed(2);
+      return (Math.round(num * 100) / 100);
     };
 
     order.itemsPrice = addDecimals(
@@ -43,9 +47,9 @@ const OrderDetailProducts = (props) => {
                 <div className="info">{item.name}</div>
               </Link>
             </td>
-            <td>${item.price} </td>
+            <td>Rp {numberWithCommas(item.price)} </td>
             <td>{item.qty} </td>
-            <td className="text-end"> ${item.qty * item.price}</td>
+            <td className="text-end"> Rp {numberWithCommas(item.qty * item.price)}</td>
           </tr>
         ))}
 
@@ -53,15 +57,15 @@ const OrderDetailProducts = (props) => {
           <td colSpan="4">
             <article className="float-end">
               <dl className="dlist">
-                <dt>Subtotal:</dt> <dd>${order.itemsPrice}</dd>
+                <dt>Subtotal:</dt> <dd>Rp {numberWithCommas(order.itemsPrice)}</dd>
               </dl>
               <dl className="dlist">
-                <dt>Shipping cost:</dt> <dd>${order.shippingPrice}</dd>
+                <dt>Shipping cost:</dt> <dd>Rp {numberWithCommas(order.shippingPrice)}</dd>
               </dl>
               <dl className="dlist">
                 <dt>Grand total:</dt>
                 <dd>
-                  <b className="h5">${order.totalPrice}</b>
+                  <b className="h5">Rp {numberWithCommas(order.totalPrice)}</b>
                 </dd>
               </dl>
               <dl className="dlist">

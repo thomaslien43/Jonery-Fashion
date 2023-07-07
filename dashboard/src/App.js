@@ -5,8 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/productScreen";
-import CategoriesScreen from "./screens/CategoriesScreen";
-import VoucherScreen from "./screens/VoucherScreen";
 import OrderScreen from "./screens/OrderScreen";
 import OrderDetailScreen from "./screens/OrderDetailScreen";
 import AddProduct from "./screens/AddProduct";
@@ -18,7 +16,6 @@ import PrivateRouter from "./PrivateRouter";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "./Redux/Actions/ProductActions";
 import { listOrders } from "./Redux/Actions/OrderActions";
-import ShippingScreen from "./screens/ShippingScreen";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,12 +36,9 @@ function App() {
         <Switch>
           <PrivateRouter path="/" component={HomeScreen} exact />
           <PrivateRouter path="/products" component={ProductScreen} />
-          <PrivateRouter path="/category" component={CategoriesScreen} />
           <PrivateRouter path="/orders" component={OrderScreen} />
           <PrivateRouter path="/order/:id" component={OrderDetailScreen} />
           <PrivateRouter path="/addproduct" component={AddProduct} />
-          <PrivateRouter path="/voucher" component={VoucherScreen} />
-          <PrivateRouter path="/shipping" component={ShippingScreen} />
           <PrivateRouter path="/users" component={UsersScreen} />
           <PrivateRouter
             path="/product/:id/edit"

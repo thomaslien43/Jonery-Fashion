@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removefromcart } from "./../Redux/Actions/cartActions";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const CartView = ({ match, location, history }) => {
   window.scrollTo(0, 0);
   const dispatch = useDispatch();
@@ -13,7 +17,7 @@ const CartView = ({ match, location, history }) => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
-  const total = cartItems.reduce((a, i) => a + i.qty * i.price, 0).toFixed(2);
+  const total = cartItems.reduce((a, i) => a + i.qty * i.price, 0);
 
   useEffect(() => {
     if (productId) {
@@ -88,7 +92,7 @@ const CartView = ({ match, location, history }) => {
                 </div>
                 <div className="cart-price mt-3 mt-md-0 col-md-2 align-items-sm-end align-items-start  d-flex flex-column justify-content-center col-sm-7">
                   <h6>PRICE</h6>
-                  <h4>Rp{item.price}</h4>
+                  <h4>Rp {numberWithCommas(item.price)}</h4>
                 </div>
               </div>
             ))}
@@ -96,7 +100,7 @@ const CartView = ({ match, location, history }) => {
             {/* End of cart iterms */}
             <div className="total">
               <span className="sub">total:</span>
-              <span className="total-price">Rp{total}</span>
+              <span className="total-price">Rp {numberWithCommas(total)}</span>
             </div>
             <hr />
             <div className="cart-buttons d-flex align-items-center row">

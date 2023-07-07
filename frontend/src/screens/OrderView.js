@@ -9,6 +9,10 @@ import moment from "moment";
 import axios from "axios";
 import { ORDER_PAY_RESET } from "../Redux/Constants/OrderConstants";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const OrderView = ({ match }) => {
   window.scrollTo(0, 0);
   const [sdkReady, setSdkReady] = useState(false);
@@ -19,10 +23,10 @@ const OrderView = ({ match }) => {
   const { order, loading, error } = orderDetails;
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
-
+  
   if (!loading) {
     const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100).toFixed(2);
+      return (Math.round(num * 100) / 100);
     };
 
     order.itemsPrice = addDecimals(
@@ -57,7 +61,13 @@ const OrderView = ({ match }) => {
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
   };
-
+  React.useEffect(()=>{
+    const interval = setInterval(()=>{
+      dispatch(getOrderDetails(orderId));
+    },15000)
+    return ()=> clearInterval(interval)
+  },[orderId, dispatch, getOrderDetails])
+  
   return (
     <>
       <Header />
@@ -101,7 +111,7 @@ const OrderView = ({ match }) => {
                     <h5>
                       <strong>Order info</strong>
                     </h5>
-                    <p>Shipping: {order.shippingAddress.country}</p>
+                    <p>Phone Number: {order.shippingAddress.phonenumber}</p>
                     <p>Pay method: {order.paymentMethod}</p>
                     {order.isPaid ? (
                       <div className="bg-info p-2 col-12">
@@ -178,7 +188,7 @@ const OrderView = ({ match }) => {
                         </div>
                         <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center ">
                           <h4>SUBTOTAL</h4>
-                          <h6>Rp{item.qty * item.price}</h6>
+                          <h6>Rp {numberWithCommas(item.qty * item.price)}</h6>
                         </div>
                       </div>
                     ))}
@@ -193,41 +203,36 @@ const OrderView = ({ match }) => {
                       <td>
                         <strong>Products</strong>
                       </td>
-                      <td>Rp{order.itemsPrice}</td>
+                      <td>Rp {numberWithCommas(order.itemsPrice)}</td>
                     </tr>
                     <tr>
                       <td>
                         <strong>Shipping</strong>
                       </td>
-                      <td>Rp{order.shippingPrice}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Tax</strong>
-                      </td>
-                      <td>Rp{order.taxPrice}</td>
+                      <td>Rp {numberWithCommas(order.shippingPrice)}</td>
                     </tr>
                     <tr>
                       <td>
                         <strong>Total</strong>
                       </td>
-                      <td>Rp{order.totalPrice}</td>
+                      <td>Rp {numberWithCommas(order.totalPrice)}</td>
                     </tr>
                   </tbody>
                 </table>
-                {!order.isPaid && (
-                  <div className="col-12">
-                    {loadingPay && <Loading />}
-                    {!sdkReady ? (
-                      <Loading />
-                    ) : (
-                      <button id="pay-button"
-                        amount={order.totalPrice}
-                        onSuccess={successPaymentHandler}
-                      >Pay!!!</button>
-                    )}
-                  </div>
-                )}
+                {
+                  !order.isPaid && 
+                  <a style={{
+                  backgroundColor:'black',
+                  color:'white',
+                  padding:16,
+                  borderRadius:16,
+                  minWidth:300,
+                  textAlign:'center',
+                  cursor:'pointer'
+                }} href={order.redirectUrl} target="_blank">
+                  Pay Now
+                  </a>
+                }
               </div>
             </div>
           </>

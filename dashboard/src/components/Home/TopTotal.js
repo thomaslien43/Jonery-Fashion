@@ -1,5 +1,9 @@
 import React from "react";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const TopTotal = (props) => {
   const { orders, products } = props;
   let totalSale = 0;
@@ -18,7 +22,7 @@ const TopTotal = (props) => {
             </span>
             <div className="text-success">
               <h6 className="mb-1">Total Sales</h6>{" "}
-              <span>Rp {totalSale.toFixed(0)}</span>
+              <span>Rp {numberWithCommas(totalSale)}</span>
             </div>
           </article>
         </div>

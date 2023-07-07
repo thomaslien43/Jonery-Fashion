@@ -9,16 +9,17 @@ const ShippingView = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
 
+  const [phonenumber, setPhoneNumber] = useState(shippingAddress.phonenumber);
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
-  const [country, setCountry] = useState(shippingAddress.country);
+
 
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    dispatch(saveShippingAddress({ phonenumber, address, city, postalCode }));
     history.push("/payment");
   };
   return (
@@ -30,6 +31,13 @@ const ShippingView = ({ history }) => {
           onSubmit={submitHandler}
         >
           <h6>DELIVERY ADDRESS</h6>
+          <input
+            type="text"
+            placeholder="Enter phone number"
+            value={phonenumber}
+            required
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
           <input
             type="text"
             placeholder="Enter address"
@@ -50,13 +58,6 @@ const ShippingView = ({ history }) => {
             value={postalCode}
             required
             onChange={(e) => setPostalCode(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Enter country"
-            value={country}
-            required
-            onChange={(e) => setCountry(e.target.value)}
           />
           <button type="submit">Continue</button>
         </form>

@@ -34,6 +34,7 @@ const Sidebar = () => {
                 <span className="text">Dashboard</span>
               </NavLink>
             </li>
+
             <li className="menu-item">
               <NavLink
                 activeClassName="active"
@@ -44,6 +45,7 @@ const Sidebar = () => {
                 <span className="text">Products</span>
               </NavLink>
             </li>
+
             <li className="menu-item">
               <NavLink
                 activeClassName="active"
@@ -54,16 +56,7 @@ const Sidebar = () => {
                 <span className="text">Add product</span>
               </NavLink>
             </li>
-            <li className="menu-item">
-              <NavLink
-                activeClassName="active"
-                className="menu-link"
-                to="/category"
-              >
-                <i className="icon fas fa-list"></i>
-                <span className="text">Categories</span>
-              </NavLink>
-            </li>
+       
             <li className="menu-item">
               <NavLink
                 activeClassName="active"
@@ -74,6 +67,7 @@ const Sidebar = () => {
                 <span className="text">Orders</span>
               </NavLink>
             </li>
+
             <li className="menu-item">
               <NavLink
                 activeClassName="active"
@@ -84,47 +78,7 @@ const Sidebar = () => {
                 <span className="text">Users</span>
               </NavLink>
             </li>
-            <li className="menu-item">
-              <NavLink
-                activeClassName="active"
-                className="menu-link"
-                to="/voucher"
-              >
-                <i class="icon fas fa-badge-percent"></i>
-                <span className="text">Voucher</span>
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                activeClassName="active"
-                className="menu-link"
-                to="/shipping"
-              >
-                <i class="icon fas fa-shipping-fast"></i>
-                <span className="text">Shipping</span>
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink
-                activeClassName="active"
-                className="menu-link disabled"
-                to="/sellers"
-              >
-                <i className="icon fas fa-store-alt"></i>
-                <span className="text">Sellers</span>
-              </NavLink>
-            </li>
 
-            <li className="menu-item">
-              <NavLink
-                activeClassName="active"
-                className="menu-link disabled"
-                to="/transaction"
-              >
-                <i className="icon fas fa-usd-circle"></i>
-                <span className="text">Transactions</span>
-              </NavLink>
-            </li>
           </ul>
           <br />
           <br />

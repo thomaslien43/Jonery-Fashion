@@ -3,6 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const Orders = (props) => {
   const { loading, error, orders } = props;
   return (
@@ -56,7 +61,7 @@ const Orders = (props) => {
                           ? moment(order.paidAt).calendar()
                           : moment(order.createdAt).calendar()}
                       </td>
-                      <td>Rp{order.totalPrice}</td>
+                      <td>Rp {numberWithCommas(order.totalPrice)}</td>
                     </tr>
                   ))}
                 </tbody>

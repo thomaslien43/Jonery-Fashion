@@ -6,6 +6,10 @@ import { ORDER_CREATE_RESET } from "../Redux/Constants/OrderConstants";
 import Header from "./../components/Header";
 import Message from "./../components/LoadingError/Error";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const PlaceOrderView = ({ history }) => {
   window.scrollTo(0, 0);
 
@@ -16,19 +20,17 @@ const PlaceOrderView = ({ history }) => {
 
   // Calculate Price
   const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2);
+    return (Math.round(num * 100) / 100);
   };
 
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   );
-  cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100);
-  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
+  cart.shippingPrice = addDecimals(20000);
   cart.totalPrice = (
     Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
-  ).toFixed(2);
+    Number(cart.shippingPrice) 
+  );
 
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
@@ -48,7 +50,6 @@ const PlaceOrderView = ({ history }) => {
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
       })
     );
@@ -87,7 +88,7 @@ const PlaceOrderView = ({ history }) => {
                 <h5>
                   <strong>Order info</strong>
                 </h5>
-                <p>Shipping: {cart.shippingAddress.country}</p>
+                <p>Phone Number: {cart.shippingAddress.phonenumber}</p>
                 <p>Pay method: {cart.paymentMethod}</p>
               </div>
             </div>
@@ -136,7 +137,7 @@ const PlaceOrderView = ({ history }) => {
                     </div>
                     <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center ">
                       <h4>SUBTOTAL</h4>
-                      <h6>Rp{item.qty * item.price}</h6>
+                      <h6>Rp {numberWithCommas(item.qty * item.price)}</h6>
                     </div>
                   </div>
                 ))}
@@ -151,25 +152,19 @@ const PlaceOrderView = ({ history }) => {
                   <td>
                     <strong>Products</strong>
                   </td>
-                  <td>Rp{cart.itemsPrice}</td>
+                  <td>Rp {numberWithCommas(cart.itemsPrice)}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Shipping</strong>
                   </td>
-                  <td>Rp{cart.shippingPrice}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Tax</strong>
-                  </td>
-                  <td>Rp{cart.taxPrice}</td>
+                  <td>Rp {numberWithCommas(cart.shippingPrice)}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Total</strong>
                   </td>
-                  <td>Rp{cart.totalPrice}</td>
+                  <td>Rp {numberWithCommas(cart.totalPrice)}</td>
                 </tr>
               </tbody>
             </table>

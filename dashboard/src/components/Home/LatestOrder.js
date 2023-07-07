@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const LatestOrder = (props) => {
   const { loading, error, orders } = props;
   return (
@@ -23,7 +27,7 @@ const LatestOrder = (props) => {
                     <b>{order.user.name}</b>
                   </td>
                   <td>{order.user.email}</td>
-                  <td>${order.totalPrice}</td>
+                  <td>Rp {numberWithCommas(order.totalPrice)}</td>
                   <td>
                     {order.isPaid ? (
                       <span className="badge rounded-pill alert-success">

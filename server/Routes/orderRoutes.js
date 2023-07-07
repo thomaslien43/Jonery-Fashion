@@ -2,8 +2,16 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import { admin, protect } from "../Middleware/AuthMiddleware.js";
 import Order from "./../Models/OrderModel.js";
+import axios from 'axios';
+import midtransClient from 'midtrans-client'
 
 const orderRouter = express.Router();
+
+const snap = new midtransClient.Snap({
+  isProduction:false,
+  clientKey:'SB-Mid-client-2Vg0OzaHlJoMrdET',
+  serverKey:'SB-Mid-server-R8gTn3oz8_y_zxltPUct6Jnu'
+})  
 
 // CREATE ORDER
 orderRouter.post(
@@ -15,7 +23,6 @@ orderRouter.post(
       shippingAddress,
       paymentMethod,
       itemsPrice,
-      taxPrice,
       shippingPrice,
       totalPrice,
     } = req.body;
@@ -25,15 +32,26 @@ orderRouter.post(
       throw new Error("No order items");
       return;
     } else {
+      const transactionId = `midtrans-${req.user._id}-${+new Date()}`
+
+      const result = await snap.createTransaction({
+        transaction_details:{
+          order_id: transactionId,
+          gross_amount: totalPrice,
+        }
+      })
+
       const order = new Order({
         orderItems,
         user: req.user._id,
         shippingAddress,
         paymentMethod,
         itemsPrice,
-        taxPrice,
         shippingPrice,
         totalPrice,
+        transactionId,
+        redirectUrl: result.redirect_url,
+        token: result.token,
       });
 
       const createOrder = await order.save();
