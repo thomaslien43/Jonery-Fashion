@@ -84,7 +84,7 @@ const SingleProduct = ({ history, match }) => {
                   <div className="product-count col-lg-7 ">
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Price</h6>
-                      <span>Rp {numberWithCommas(product.price)}</span>
+                      <span>Rp {numberWithCommas(product?.price || '0')}</span>
                     </div>
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Status</h6>
